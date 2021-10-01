@@ -12,14 +12,15 @@ const brightIdGatekeeper = '0x7714Eb44754cB9db6D65b61f3352df12600dC593';
 async function main() {
   const signer = (await hre.ethers.getSigners())[0];
   const evmcrispr = await EVMcrispr.create(signer, dao);
-  evmcrispr.forward([
+  const tx = await evmcrispr.forward([
     evmcrispr.addPermission([
       evmcrispr.ANY_ENTITY,
       'voting',
-      'CREATE_VOTE_ROLE',
+      'CREATE_VOTES_ROLE',
       evmcrispr.setOracle(brightIdGatekeeper)
     ], 'voting')
-  ])
+  ], ['voting']);
+  console.log(`Vote created: ${tx.transactionHash}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
